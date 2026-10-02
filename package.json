@@ -1,0 +1,9 @@
+{
+  "name": "tolwatch",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": { "start": "node src/server.js", "test": "node --test tests/node/*.test.js", "check": "node --check src/server.js && node --check src/engine.js && node --check static/app.js && node --check static/automation.js" },
+  "dependencies": { "cheerio": "^1.1.2", "cron-parser": "^5.4.0", "express": "^5.1.0", "hls.js": "^1.6.13", "ipaddr.js": "^2.2.0" }
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b171b">
+  <title>TolWatch — Live highway cameras</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-camera" viewBox="0 0 24 24"><rect x="2" y="6" width="15" height="12" rx="2"/><path d="m17 10 5-3v10l-5-3M7 10h5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 4h7v7m0-7-9 9M19 14v6H4V5h6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3ZM12 9v5m0 3v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark"><svg class="icon"><use href="#i-camera"></use></svg><span class="brand-pulse"></span></div>
+        <div><div class="brand-name">tol<span>watch</span><span class="brand-dot">.</span></div><div class="brand-caption">HIGHWAY CAMERA DESK</div></div>
+        <button class="icon-button sidebar-close" id="closeSidebar" aria-label="Close menu"><svg class="icon"><use href="#i-x"></use></svg></button>
+      </div>
+
+      <div class="sidebar-section-title"><span>EXPLORE NETWORK</span><span class="section-indicator"></span></div>
+      <div class="sidebar-search"><svg class="icon"><use href="#i-search"></use></svg><input type="search" id="roadSearch" placeholder="Find a toll road..." aria-label="Search roads" autocomplete="off"><kbd>/</kbd></div>
+      <div class="list-head"><span>TOLL ROADS</span><span id="roadTotal" class="count-badge">—</span></div>
+      <div class="road-list" id="roadList" aria-label="Toll roads"><div class="sidebar-loading">Loading roads...</div></div>
+      <div class="sidebar-bottom">
+        <div class="source-card"><div class="source-icon"><svg class="icon"><use href="#i-external"></use></svg></div><div><div class="source-heading">Official source</div><div class="source-caption">Bina Marga · Indonesia</div></div><a href="https://binamarga.pu.go.id/contents/cctv_tol" target="_blank" rel="noopener noreferrer" aria-label="Open Bina Marga CCTV page"><svg class="icon"><use href="#i-chevron"></use></svg></a></div>
+        <div class="sidebar-signoff">INDEPENDENT LOCAL VIEWER <span>·</span> v1.0</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left"><button class="icon-button menu-button" id="openSidebar" aria-label="Open menu"><svg class="icon"><use href="#i-menu"></use></svg></button><span class="crumb-root">NETWORK</span><svg class="icon crumb-chevron"><use href="#i-chevron"></use></svg><span class="crumb-current" id="breadcrumb">OVERVIEW</span></div>
+        <div class="topbar-right"><div class="local-chip"><span class="chip-light"></span>LOCAL SESSION</div><div class="topbar-time" id="clock">--:-- WIB</div></div>
+      </header>
+
+      <div class="content">
+        <div class="page-heading"><div class="eyebrow"><span class="eyebrow-line"></span> LIVE TRAFFIC INTELLIGENCE <span class="eyebrow-line"></span></div><div class="heading-row"><div><h1>Highway <em>eyes.</em></h1><p>Find a camera. Watch the road. Save the moment.</p></div><button class="button subtle-button refresh-button" id="refreshButton" title="Refresh camera list"><svg class="icon"><use href="#i-refresh"></use></svg><span>Refresh feeds</span></button></div></div>
+
+        <div class="notice" id="notice" role="status" hidden></div>
+
+        <div class="metrics"><div class="metric"><div class="metric-icon"><svg class="icon"><use href="#i-folder"></use></svg></div><div><strong id="roadCount">—</strong><span>ROAD SECTIONS</span></div></div><div class="metric"><div class="metric-icon"><svg class="icon"><use href="#i-camera"></use></svg></div><div><strong id="cameraCount">—</strong><span>CAMERAS ON ROAD</span></div></div><div class="metric"><div class="metric-icon"><span class="metric-record-dot"></span></div><div><strong id="recordCount">0</strong><span>ACTIVE RECORDINGS</span></div></div><div class="metric metric-source"><div class="metric-icon"><svg class="icon"><use href="#i-clock"></use></svg></div><div><strong id="updatedAt">—</strong><span>CATALOG UPDATED</span></div></div></div>
+
+        <section class="section viewer-section" aria-labelledby="viewerTitle"><div class="section-header"><div><div class="section-kicker">01 / LIVE VIEW</div><h2 id="viewerTitle">Camera viewer</h2></div><div class="section-aside"><span class="section-aside-dot"></span> FEEDS PROVIDED BY ROAD OPERATORS</div></div>
+          <div class="viewer-layout"><div class="viewer-column"><div class="player" id="player"><div class="player-top"><span class="player-status"><span class="live-dot"></span><span id="playerState">NO CAMERA SELECTED</span></span><span class="player-corner-label">TOLWATCH / LIVE</span></div><video id="video" controls playsinline muted preload="none" aria-label="Selected CCTV stream"></video><div class="player-placeholder" id="playerPlaceholder"><div class="placeholder-reticle"><svg class="icon"><use href="#i-camera"></use></svg></div><strong>Select a camera to begin</strong><span>Choose a camera below to load its live stream.</span></div><div class="player-bottom"><span id="playerOverlayName">CAMERA FEED / STANDBY</span><span class="corner-cross">✛</span></div></div>
+            <div class="player-caption"><div><span class="caption-label">NOW VIEWING</span><h3 id="selectedName">No camera selected</h3><p id="selectedRoad">Choose a road and camera to start watching.</p></div><a class="source-link" id="roadSource" href="https://binamarga.pu.go.id/contents/cctv_tol" target="_blank" rel="noopener noreferrer">View original page <svg class="icon"><use href="#i-external"></use></svg></a></div>
+          </div>
+          <aside class="capture-panel"><div class="capture-heading"><span class="capture-heading-icon"><svg class="icon"><use href="#i-download"></use></svg></span><div><span class="capture-kicker">CAPTURE CONTROL</span><h3>Record a clip</h3></div></div><p class="capture-description">Save live footage from the selected camera, starting now. Your clip is stored on this computer.</p><label for="duration">RECORDING LENGTH</label><div class="select-wrap"><select id="duration"><option value="30">30 seconds</option><option value="60" selected>1 minute</option><option value="120">2 minutes</option><option value="300">5 minutes</option><option value="600">10 minutes</option></select><svg class="icon"><use href="#i-chevron"></use></svg></div><div class="capture-info"><svg class="icon"><use href="#i-clock"></use></svg><span>Only live footage from this point forward can be saved.</span></div><button class="button record-button" id="recordButton" disabled><span class="record-dot"></span> Start recording <svg class="icon"><use href="#i-chevron"></use></svg></button><div class="ffmpeg-status" id="ffmpegStatus">Checking FFmpeg...</div><div class="capture-divider"></div><div class="panel-footnote"><span>OUTPUT FORMAT</span><strong>MP4 VIDEO</strong></div><div class="panel-footnote"><span>SAVED TO</span><strong>./recordings/</strong></div></aside></div>
+        </section>
+
+        <section class="section library-section" aria-labelledby="libraryTitle"><div class="section-header library-heading"><div><div class="section-kicker">02 / CAMERA DIRECTORY</div><h2 id="libraryTitle">Cameras on this road <span class="title-count" id="cameraTitleCount">—</span></h2></div><div class="camera-search"><svg class="icon"><use href="#i-search"></use></svg><input type="search" id="cameraSearch" placeholder="Search camera or KM..." aria-label="Search cameras" autocomplete="off"></div></div><div class="road-label-row"><span class="road-label"><span class="tiny-diamond"></span><span id="roadLabel">SELECT A ROAD</span></span><span class="road-label-note" id="roadNote">Select a feed to start watching</span></div><div class="camera-grid" id="cameraGrid"><div class="empty-state">Loading camera directory...</div></div></section>
+
+        <section class="section recordings-section" aria-labelledby="recordingsTitle"><div class="section-header"><div><div class="section-kicker">03 / YOUR SAVED CLIPS</div><h2 id="recordingsTitle">Recording library <span class="title-count" id="recordingTitleCount">0</span></h2></div><span class="section-aside">Stored locally on your computer</span></div><div class="recordings-list" id="recordingsList"><div class="empty-state">No recordings yet. Select a camera and start recording to save your first clip.</div></div></section>
+
+        <footer class="footer"><span>TOLWATCH <span class="footer-separator">/</span> A LOCAL CAMERA VIEWER</span><span>Video feeds © respective road operators · <a href="https://binamarga.pu.go.id/contents/cctv_tol" target="_blank" rel="noopener noreferrer">Bina Marga CCTV Tol <svg class="icon"><use href="#i-external"></use></svg></a></span></footer>
+      </div>
+    </main>
+  </div>
+  <script src="/hls.min.js" defer></script>
+  <script src="/automation.js" defer></script>
+</body>
+</html>

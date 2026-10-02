@@ -1,0 +1,16 @@
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { Catalog } from '../../src/catalog.js';
+import { Store } from '../../src/store.js';
+import { Engine } from '../../src/engine.js';
+import { createApp } from '../../src/server.js';
+const dir = await mkdtemp(path.join(tmpdir(), 'tolwatch-browser-'));
+const catalog = new Catalog({ fetchPage: async url => url.includes('?') ? '<div class="card-cctv"><video id="my_video_1" src="https://camera.example.com/index.m3u8"></video><h5>Test Camera</h5></div>' : '<div class="bpjn-box"><a href="?id_ruas=road">Road</a><h1>Test Road</h1></div>' });
+const store = new Store(path.join(dir, 'data'), path.join(dir, 'clips'));
+const engine = new Engine({ store, catalog, directory: path.join(dir, 'clips'), minFreeBytes: 0 });
+await engine.init();
+const app = createApp({ store, catalog, engine, password: 'browser-test' });
+const server = app.listen(0, '127.0.0.1', () => console.log(`BROWSER_URL=http://127.0.0.1:${server.address().port}`));
+process.stdin.resume();
+process.stdin.once('data', async () => { await engine.shutdown(); await new Promise(r => server.close(r)); store.close(); await rm(dir, { recursive: true, force: true }); process.exit(0); });
